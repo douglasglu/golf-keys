@@ -14,7 +14,7 @@
 <title>Doug's Golf Keys</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--bg:#0a0f1a;--card:#111827;--card-alt:#1a2332;--green:#00c853;--green-dim:#00c85340;--text:#e2e8f0;--text-dim:#94a3b8;--border:#1e293b;--radius:14px}
+:root{--bg:#0a0f1a;--card:#111827;--card-alt:#1a2332;--green:#00c853;--green-dim:#00c85340;--text:#e2e8f0;--text-dim:#94a3b8;--border:#1e293b;--radius:14px;--red:#ef4444;--red-dim:#ef444430;--amber:#f59e0b;--amber-dim:#f59e0b30;--blue:#3b82f6;--blue-dim:#3b82f630}
 html,body{
   background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   font-size:17px;line-height:1.5;overflow-x:hidden;min-height:100dvh;
@@ -29,16 +29,28 @@ header h1 span{color:var(--green)}
 header .date{font-size:13px;color:var(--text-dim)}
 
 /* Offline indicator */
-.offline-badge{
-  display:none;font-size:11px;background:#f59e0b22;color:#f59e0b;
-  padding:4px 10px;border-radius:6px;text-align:center;margin-bottom:8px;
-}
+.offline-badge{display:none;font-size:11px;background:var(--amber-dim);color:var(--amber);padding:4px 10px;border-radius:6px;text-align:center;margin-bottom:8px}
 .offline-badge.show{display:block}
+
+/* Nav tabs */
+.nav-tabs{
+  display:flex;gap:4px;margin-bottom:16px;padding:4px;background:var(--card);border-radius:12px;border:1px solid var(--border);
+}
+.nav-tab{
+  flex:1;padding:10px 8px;border-radius:9px;font-size:13px;font-weight:600;
+  text-align:center;color:var(--text-dim);cursor:pointer;transition:all .2s;
+}
+.nav-tab.active{background:var(--green-dim);color:var(--green)}
+
+/* Tab content */
+.tab-content{display:none;animation:fadeIn .2s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
 /* Section labels */
 .section-label{
   font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;
-  color:var(--green);margin:20px 0 10px;display:flex;align-items:center;gap:8px;
+  color:var(--green);margin:16px 0 10px;display:flex;align-items:center;gap:8px;
 }
 .section-label::after{content:'';flex:1;height:1px;background:var(--border)}
 
@@ -52,13 +64,9 @@ header .date{font-size:13px;color:var(--text-dim)}
 .focus-card:active{border-color:var(--green)}
 .focus-card .icon{font-size:22px;margin-bottom:8px;display:block}
 .focus-card .thought{font-size:18px;font-weight:600;line-height:1.4;margin-bottom:12px}
-.focus-card .tap-hint{
-  font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:6px;
-}
+.focus-card .tap-hint{font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:6px}
 .focus-dots{display:flex;gap:6px;margin-top:10px}
-.focus-dots .dot{
-  width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .25s;
-}
+.focus-dots .dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .25s}
 .focus-dots .dot.active{background:var(--green)}
 
 /* Working keys */
@@ -88,11 +96,7 @@ header .date{font-size:13px;color:var(--text-dim)}
 .club-tab.active{background:var(--green-dim);border-color:var(--green);color:var(--green)}
 
 /* Club card content */
-.club-content{
-  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:16px;animation:fadeIn .2s ease;
-}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.club-content{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;animation:fadeIn .2s ease}
 .club-content .club-name{font-size:16px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
 .club-content .club-name .emoji{font-size:20px}
 .club-content ul{list-style:none;padding:0}
@@ -101,9 +105,59 @@ header .date{font-size:13px;color:var(--text-dim)}
   display:flex;align-items:flex-start;gap:10px;color:var(--text-dim);
 }
 .club-content li:last-child{border-bottom:none}
-.club-content li::before{
-  content:'';min-width:6px;height:6px;border-radius:50%;background:var(--green);margin-top:8px;flex-shrink:0;
+.club-content li::before{content:'';min-width:6px;height:6px;border-radius:50%;background:var(--green);margin-top:8px;flex-shrink:0}
+
+/* Fix My Miss */
+.miss-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.miss-btn{
+  padding:14px 12px;border-radius:var(--radius);border:1px solid var(--border);
+  background:var(--card);color:var(--text-dim);font-size:14px;font-weight:600;
+  text-align:center;cursor:pointer;transition:all .2s;
 }
+.miss-btn:active{transform:scale(0.97)}
+.miss-btn.active{border-color:var(--red);color:var(--red);background:var(--red-dim)}
+.miss-btn .miss-emoji{font-size:20px;display:block;margin-bottom:4px}
+.fix-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;animation:fadeIn .2s ease;
+}
+.fix-card h3{font-size:15px;font-weight:700;color:var(--red);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.fix-card .fix-item{
+  font-size:15px;line-height:1.45;padding:10px 0;border-bottom:1px solid var(--border);
+  color:var(--text-dim);display:flex;align-items:flex-start;gap:10px;
+}
+.fix-card .fix-item:last-child{border-bottom:none}
+.fix-card .fix-item::before{content:'';min-width:8px;height:8px;border-radius:2px;background:var(--amber);margin-top:7px;flex-shrink:0}
+
+/* Pre-shot Routine */
+.routine-container{position:relative}
+.routine-step{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:24px 20px;text-align:center;min-height:180px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:all .3s;
+}
+.routine-step .step-num{
+  font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--green);margin-bottom:8px;
+}
+.routine-step .step-title{font-size:22px;font-weight:700;margin-bottom:8px}
+.routine-step .step-cue{font-size:16px;color:var(--text-dim);line-height:1.5;max-width:300px}
+.routine-progress{display:flex;gap:6px;justify-content:center;margin-top:14px}
+.routine-progress .pip{
+  width:32px;height:4px;border-radius:2px;background:var(--border);transition:background .3s;
+}
+.routine-progress .pip.done{background:var(--green)}
+.routine-progress .pip.current{background:var(--green);box-shadow:0 0 8px var(--green-dim)}
+.routine-nav{display:flex;gap:8px;margin-top:14px;justify-content:center}
+.routine-nav button{
+  padding:12px 24px;border-radius:10px;border:1px solid var(--border);
+  background:var(--card);color:var(--text);font-size:15px;font-weight:600;cursor:pointer;
+  transition:all .2s;
+}
+.routine-nav button:active{transform:scale(0.97)}
+.routine-nav button.primary{background:var(--green);color:#000;border-color:var(--green)}
+.routine-nav button.reset{font-size:13px;color:var(--text-dim);padding:10px 16px}
 
 /* Swipe hint */
 .swipe-hint{text-align:center;font-size:12px;color:var(--text-dim);opacity:.4;padding:8px 0 0}
@@ -121,39 +175,83 @@ footer{text-align:center;padding:28px 0 8px;font-size:12px;color:var(--text-dim)
 
 <div class="offline-badge" id="offlineBadge">Offline mode — cached data</div>
 
-<!-- Section 1: Today's Focus -->
-<div class="section-label">Today's Focus</div>
-<div class="focus-card" id="focusCard" role="button" aria-label="Tap to cycle swing thoughts">
-  <span class="icon">&#127919;</span>
-  <div class="thought" id="focusText"></div>
-  <div class="tap-hint">Tap to cycle &rarr;</div>
-  <div class="focus-dots" id="focusDots"></div>
+<!-- Main Navigation -->
+<div class="nav-tabs">
+  <div class="nav-tab active" data-tab="keys">Keys</div>
+  <div class="nav-tab" data-tab="routine">Pre-Shot</div>
+  <div class="nav-tab" data-tab="fix">Fix Miss</div>
 </div>
 
-<!-- Section 2: Working Keys -->
-<div class="section-label">Current Working Keys</div>
-<div id="keysContainer"></div>
+<!-- ===================== TAB 1: KEYS ===================== -->
+<div class="tab-content active" id="tab-keys">
 
-<!-- Section 3: Club Quick Cards -->
-<div class="section-label">Club Quick Cards</div>
-<div class="club-tabs" id="clubTabs"></div>
-<div id="clubContent"></div>
-<div class="swipe-hint">swipe tabs &larr; &rarr;</div>
+  <!-- Today's Focus -->
+  <div class="section-label">Today's Focus</div>
+  <div class="focus-card" id="focusCard" role="button" aria-label="Tap to cycle swing thoughts">
+    <span class="icon">&#127919;</span>
+    <div class="thought" id="focusText"></div>
+    <div class="tap-hint">Tap to cycle &rarr;</div>
+    <div class="focus-dots" id="focusDots"></div>
+  </div>
 
-<footer>Range &amp; Course Companion &middot; v1.0</footer>
+  <!-- Working Keys -->
+  <div class="section-label">Current Working Keys</div>
+  <div id="keysContainer"></div>
+
+  <!-- Club Quick Cards -->
+  <div class="section-label">Club Quick Cards</div>
+  <div class="club-tabs" id="clubTabs"></div>
+  <div id="clubContent"></div>
+  <div class="swipe-hint">swipe tabs &larr; &rarr;</div>
+
+</div>
+
+<!-- ===================== TAB 2: PRE-SHOT ROUTINE ===================== -->
+<div class="tab-content" id="tab-routine">
+
+  <div class="section-label">Pre-Shot Routine</div>
+  <div class="routine-container">
+    <div class="routine-step" id="routineStep"></div>
+    <div class="routine-progress" id="routineProgress"></div>
+    <div class="routine-nav" id="routineNav"></div>
+  </div>
+
+</div>
+
+<!-- ===================== TAB 3: FIX MY MISS ===================== -->
+<div class="tab-content" id="tab-fix">
+
+  <div class="section-label">What's the miss?</div>
+  <div class="miss-grid" id="missGrid"></div>
+  <div id="fixContent"></div>
+
+</div>
+
+<footer>Range &amp; Course Companion &middot; v2.0</footer>
 
 <script>
 // ============================
-// SERVICE WORKER REGISTRATION
+// SERVICE WORKER
 // ============================
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js').catch(function(){});
 }
-
-// Offline indicator
 window.addEventListener('online', function(){ document.getElementById('offlineBadge').classList.remove('show'); });
 window.addEventListener('offline', function(){ document.getElementById('offlineBadge').classList.add('show'); });
 if (!navigator.onLine) document.getElementById('offlineBadge').classList.add('show');
+
+// ============================
+// NAVIGATION
+// ============================
+var navTabs = document.querySelectorAll('.nav-tab');
+navTabs.forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    navTabs.forEach(function(t){ t.classList.remove('active'); });
+    document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+  });
+});
 
 // ============================
 // DATA
@@ -179,7 +277,7 @@ var workingKeys = [
 
 var clubData = [
   { tab: "Driver", emoji: "🚀", keys: [
-    "50-50 weight, hit up towards 11 o'clock",
+    "50-50 weight, hit up towards 11 o’clock",
     "Bigger arc, keep head back for counterbalance",
     "Release a touch sooner at P6.5–P7, right arm straightens after impact",
     "Right foot banking + left foot breaking + forearm roll"
@@ -196,7 +294,7 @@ var clubData = [
     "Weight shift + squat shallow trigger for max arm speed"
   ]},
   { tab: "Short Irons", emoji: "🎯", keys: [
-    "Two hip swing with kinematic drop at 3 o'clock",
+    "Two hip swing with kinematic drop at 3 o’clock",
     "Release at end of P7, more down the line",
     "Crossover wrists like Tiger after explosion off left foot",
     "Closer stance for better up and down forces"
@@ -217,14 +315,63 @@ var clubData = [
   ]}
 ];
 
-// ============================
-// RENDER
-// ============================
+var routineSteps = [
+  { num: "Step 1", title: "Read", cue: "Pick your target line and shot shape. See the ball flight in your mind." },
+  { num: "Step 2", title: "Setup", cue: "Drape over the ball. Feet balanced. Align club face, then body. Feel grounded." },
+  { num: "Step 3", title: "Trigger", cue: "Waggle. Feel skeletal equilibrium. One deep breath in, slow exhale out." },
+  { num: "Step 4", title: "One Thought", cue: focusThoughts[0] },
+  { num: "Step 5", title: "Commit", cue: "See the shot shape one more time. Trust it. Go." }
+];
 
-// Date
+var missData = [
+  { label: "Slice", emoji: "↪️", fixes: [
+    "Takeaway too inside — start straighter and slightly outside",
+    "Hips not clearing — push off left heel, feel the hip turn fully",
+    "No forearm roll — feel the Tiger Woods crossover after impact",
+    "Club face open at impact — check grip knuckles, strengthen left hand"
+  ]},
+  { label: "Pull / Hook", emoji: "↩️", fixes: [
+    "Right shoulder firing over the top — keep it back as long as possible",
+    "Too much hand flip — hold face stable past impact, less wrist roll",
+    "Swinging too far left — feel the release at target, not across body",
+    "Weight not shifting — lateral shift before rotation"
+  ]},
+  { label: "Fat", emoji: "💥", fixes: [
+    "Weight stuck on back foot — shift left earlier, feel the wall on left heel",
+    "Dropping into the ball — maintain spine angle, don't dip",
+    "No divot forward — ball position check, hands ahead at impact",
+    "Arms disconnected from body — reconnect triceps to lats on downswing"
+  ]},
+  { label: "Thin", emoji: "🛩️", fixes: [
+    "Standing up at impact — drape over ball more, hold the bend",
+    "Losing spine angle — keep chest over ball through impact",
+    "Scooping — hands ahead, compress and deloft, take a divot",
+    "Head pulling up early — let right shoulder turn chin to look up"
+  ]},
+  { label: "No Power", emoji: "🐢", fixes: [
+    "Arms disconnected from torso — shallow and ride the lats",
+    "No lag — hold hinge longer, let gravity initiate the drop",
+    "Not using ground — explode off left heel, feel both feet push",
+    "Backswing too fast — slow coil, store energy, then release like a whip"
+  ]},
+  { label: "Inconsistent", emoji: "🎲", fixes: [
+    "Tempo too fast — slow down takeaway and backswing, earn the speed",
+    "Swaying outside cylinder — coil within the body, stay centered",
+    "Balance off — plant to ground first, feel stability before swinging",
+    "Too many thoughts — ONE swing thought only, imagine the shot shape"
+  ]}
+];
+
+// ============================
+// DATE
+// ============================
 var d = new Date();
 document.getElementById('dateDisplay').textContent =
   d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+
+// ============================
+// TAB 1: KEYS
+// ============================
 
 // Focus Card
 var focusIdx = 0;
@@ -239,6 +386,8 @@ function renderFocus() {
     dots += '<span class="dot' + (i === focusIdx ? ' active' : '') + '"></span>';
   }
   focusDots.innerHTML = dots;
+  // Update routine step 4 with current focus
+  routineSteps[3].cue = focusThoughts[focusIdx];
 }
 renderFocus();
 
@@ -247,15 +396,12 @@ focusCard.addEventListener('click', function() {
   renderFocus();
 });
 
-// Touch swipe on focus card
 var fsx = 0;
 focusCard.addEventListener('touchstart', function(e){ fsx = e.touches[0].clientX; }, {passive:true});
 focusCard.addEventListener('touchend', function(e){
   var dx = e.changedTouches[0].clientX - fsx;
   if (Math.abs(dx) > 40) {
-    focusIdx = dx < 0
-      ? (focusIdx + 1) % focusThoughts.length
-      : (focusIdx - 1 + focusThoughts.length) % focusThoughts.length;
+    focusIdx = dx < 0 ? (focusIdx + 1) % focusThoughts.length : (focusIdx - 1 + focusThoughts.length) % focusThoughts.length;
     renderFocus();
   }
 }, {passive:true});
@@ -272,33 +418,29 @@ kc.innerHTML = khtml;
 
 // Club Cards
 var activeClub = 0;
-var clubTabs = document.getElementById('clubTabs');
-var clubContent = document.getElementById('clubContent');
+var clubTabsEl = document.getElementById('clubTabs');
+var clubContentEl = document.getElementById('clubContent');
 
 function renderClubTabs() {
   var html = '';
   for (var i = 0; i < clubData.length; i++) {
-    html += '<div class="club-tab' + (i === activeClub ? ' active' : '') +
-      '" data-idx="' + i + '">' + clubData[i].tab + '</div>';
+    html += '<div class="club-tab' + (i === activeClub ? ' active' : '') + '" data-idx="' + i + '">' + clubData[i].tab + '</div>';
   }
-  clubTabs.innerHTML = html;
+  clubTabsEl.innerHTML = html;
 }
 
 function renderClubContent() {
   var c = clubData[activeClub];
-  var html = '<div class="club-content"><div class="club-name"><span class="emoji">' +
-    c.emoji + '</span>' + c.tab + '</div><ul>';
-  for (var j = 0; j < c.keys.length; j++) {
-    html += '<li>' + c.keys[j] + '</li>';
-  }
+  var html = '<div class="club-content"><div class="club-name"><span class="emoji">' + c.emoji + '</span>' + c.tab + '</div><ul>';
+  for (var j = 0; j < c.keys.length; j++) { html += '<li>' + c.keys[j] + '</li>'; }
   html += '</ul></div>';
-  clubContent.innerHTML = html;
+  clubContentEl.innerHTML = html;
 }
 
 renderClubTabs();
 renderClubContent();
 
-clubTabs.addEventListener('click', function(e) {
+clubTabsEl.addEventListener('click', function(e) {
   var tab = e.target.closest('.club-tab');
   if (!tab) return;
   activeClub = parseInt(tab.dataset.idx);
@@ -307,10 +449,9 @@ clubTabs.addEventListener('click', function(e) {
   tab.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
 });
 
-// Swipe on club content
 var csx = 0;
-clubContent.addEventListener('touchstart', function(e){ csx = e.touches[0].clientX; }, {passive:true});
-clubContent.addEventListener('touchend', function(e){
+clubContentEl.addEventListener('touchstart', function(e){ csx = e.touches[0].clientX; }, {passive:true});
+clubContentEl.addEventListener('touchend', function(e){
   var dx = e.changedTouches[0].clientX - csx;
   if (Math.abs(dx) > 50) {
     if (dx < 0 && activeClub < clubData.length - 1) activeClub++;
@@ -318,10 +459,102 @@ clubContent.addEventListener('touchend', function(e){
     else return;
     renderClubTabs();
     renderClubContent();
-    var tabs = clubTabs.querySelectorAll('.club-tab');
-    if (tabs[activeClub]) tabs[activeClub].scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
   }
 }, {passive:true});
+
+// ============================
+// TAB 2: PRE-SHOT ROUTINE
+// ============================
+var routineIdx = 0;
+
+function renderRoutine() {
+  var step = routineSteps[routineIdx];
+  var el = document.getElementById('routineStep');
+  el.innerHTML = '<div class="step-num">' + step.num + '</div>' +
+    '<div class="step-title">' + step.title + '</div>' +
+    '<div class="step-cue">' + step.cue + '</div>';
+
+  // Progress pips
+  var pips = '';
+  for (var i = 0; i < routineSteps.length; i++) {
+    var cls = i < routineIdx ? 'pip done' : i === routineIdx ? 'pip current' : 'pip';
+    pips += '<div class="' + cls + '"></div>';
+  }
+  document.getElementById('routineProgress').innerHTML = pips;
+
+  // Nav buttons
+  var nav = '';
+  if (routineIdx > 0) nav += '<button class="reset" onclick="resetRoutine()">Start over</button>';
+  if (routineIdx < routineSteps.length - 1) {
+    nav += '<button class="primary" onclick="nextRoutineStep()">Next &rarr;</button>';
+  } else {
+    nav += '<button class="primary" onclick="resetRoutine()">&#10003; Reset</button>';
+  }
+  document.getElementById('routineNav').innerHTML = nav;
+}
+
+function nextRoutineStep() {
+  if (routineIdx < routineSteps.length - 1) routineIdx++;
+  renderRoutine();
+}
+
+function resetRoutine() {
+  routineIdx = 0;
+  renderRoutine();
+}
+
+renderRoutine();
+
+// Swipe on routine
+var rsx = 0;
+var routineEl = document.getElementById('routineStep');
+routineEl.addEventListener('touchstart', function(e){ rsx = e.touches[0].clientX; }, {passive:true});
+routineEl.addEventListener('touchend', function(e){
+  var dx = e.changedTouches[0].clientX - rsx;
+  if (dx < -40 && routineIdx < routineSteps.length - 1) { routineIdx++; renderRoutine(); }
+  else if (dx > 40 && routineIdx > 0) { routineIdx--; renderRoutine(); }
+}, {passive:true});
+
+// ============================
+// TAB 3: FIX MY MISS
+// ============================
+var activeMiss = -1;
+
+function renderMissGrid() {
+  var html = '';
+  for (var i = 0; i < missData.length; i++) {
+    html += '<div class="miss-btn' + (i === activeMiss ? ' active' : '') + '" data-idx="' + i + '">' +
+      '<span class="miss-emoji">' + missData[i].emoji + '</span>' + missData[i].label + '</div>';
+  }
+  document.getElementById('missGrid').innerHTML = html;
+}
+
+function renderFixContent() {
+  if (activeMiss < 0) {
+    document.getElementById('fixContent').innerHTML = '<p style="text-align:center;color:var(--text-dim);padding:20px;font-size:14px;">Tap your miss above to see fixes</p>';
+    return;
+  }
+  var m = missData[activeMiss];
+  var html = '<div class="fix-card"><h3>' + m.emoji + ' Fixes for ' + m.label + '</h3>';
+  for (var i = 0; i < m.fixes.length; i++) {
+    html += '<div class="fix-item">' + m.fixes[i] + '</div>';
+  }
+  html += '</div>';
+  document.getElementById('fixContent').innerHTML = html;
+}
+
+renderMissGrid();
+renderFixContent();
+
+document.getElementById('missGrid').addEventListener('click', function(e) {
+  var btn = e.target.closest('.miss-btn');
+  if (!btn) return;
+  var idx = parseInt(btn.dataset.idx);
+  activeMiss = activeMiss === idx ? -1 : idx;
+  renderMissGrid();
+  renderFixContent();
+});
+
 </script>
 </body>
 </html>
