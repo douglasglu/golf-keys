@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Golf Keys">
+<meta name="theme-color" content="#0a0f1a">
+<meta name="description" content="Doug's golf swing keys and club quick cards">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<title>Doug's Golf Keys</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg:#0a0f1a;--card:#111827;--card-alt:#1a2332;--green:#00c853;--green-dim:#00c85340;--text:#e2e8f0;--text-dim:#94a3b8;--border:#1e293b;--radius:14px}
+html,body{
+  background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:17px;line-height:1.5;overflow-x:hidden;min-height:100dvh;
+  -webkit-font-smoothing:antialiased;
+}
+body{padding:env(safe-area-inset-top,0) 16px 32px}
+
+/* Header */
+header{display:flex;align-items:center;justify-content:space-between;padding:12px 0 8px}
+header h1{font-size:20px;font-weight:700;letter-spacing:-.3px}
+header h1 span{color:var(--green)}
+header .date{font-size:13px;color:var(--text-dim)}
+
+/* Offline indicator */
+.offline-badge{
+  display:none;font-size:11px;background:#f59e0b22;color:#f59e0b;
+  padding:4px 10px;border-radius:6px;text-align:center;margin-bottom:8px;
+}
+.offline-badge.show{display:block}
+
+/* Section labels */
+.section-label{
+  font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;
+  color:var(--green);margin:20px 0 10px;display:flex;align-items:center;gap:8px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* Today's Focus card */
+.focus-card{
+  background:linear-gradient(135deg,#0d2818 0%,#0a0f1a 100%);
+  border:1px solid var(--green-dim);border-radius:var(--radius);
+  padding:20px 18px;position:relative;overflow:hidden;cursor:pointer;
+  min-height:100px;transition:border-color .2s;
+}
+.focus-card:active{border-color:var(--green)}
+.focus-card .icon{font-size:22px;margin-bottom:8px;display:block}
+.focus-card .thought{font-size:18px;font-weight:600;line-height:1.4;margin-bottom:12px}
+.focus-card .tap-hint{
+  font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:6px;
+}
+.focus-dots{display:flex;gap:6px;margin-top:10px}
+.focus-dots .dot{
+  width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .25s;
+}
+.focus-dots .dot.active{background:var(--green)}
+
+/* Working keys */
+.key-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px;
+}
+.key-num{
+  min-width:28px;height:28px;border-radius:8px;background:var(--green-dim);
+  color:var(--green);font-size:13px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.key-content .key-title{font-size:15px;font-weight:700;margin-bottom:2px}
+.key-content .key-desc{font-size:14px;color:var(--text-dim);line-height:1.4}
+
+/* Club tabs */
+.club-tabs{
+  display:flex;gap:6px;overflow-x:auto;padding:4px 0 12px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.club-tabs::-webkit-scrollbar{display:none}
+.club-tab{
+  flex-shrink:0;padding:10px 16px;border-radius:10px;font-size:14px;font-weight:600;
+  background:var(--card);border:1px solid var(--border);color:var(--text-dim);
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.club-tab.active{background:var(--green-dim);border-color:var(--green);color:var(--green)}
+
+/* Club card content */
+.club-content{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;animation:fadeIn .2s ease;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.club-content .club-name{font-size:16px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.club-content .club-name .emoji{font-size:20px}
+.club-content ul{list-style:none;padding:0}
+.club-content li{
+  font-size:15px;line-height:1.45;padding:8px 0;border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;gap:10px;color:var(--text-dim);
+}
+.club-content li:last-child{border-bottom:none}
+.club-content li::before{
+  content:'';min-width:6px;height:6px;border-radius:50%;background:var(--green);margin-top:8px;flex-shrink:0;
+}
+
+/* Swipe hint */
+.swipe-hint{text-align:center;font-size:12px;color:var(--text-dim);opacity:.4;padding:8px 0 0}
+
+/* Footer */
+footer{text-align:center;padding:28px 0 8px;font-size:12px;color:var(--text-dim);opacity:.4}
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span>&#9971;</span> Doug's Keys</h1>
+  <div class="date" id="dateDisplay"></div>
+</header>
+
+<div class="offline-badge" id="offlineBadge">Offline mode — cached data</div>
+
+<!-- Section 1: Today's Focus -->
+<div class="section-label">Today's Focus</div>
+<div class="focus-card" id="focusCard" role="button" aria-label="Tap to cycle swing thoughts">
+  <span class="icon">&#127919;</span>
+  <div class="thought" id="focusText"></div>
+  <div class="tap-hint">Tap to cycle &rarr;</div>
+  <div class="focus-dots" id="focusDots"></div>
+</div>
+
+<!-- Section 2: Working Keys -->
+<div class="section-label">Current Working Keys</div>
+<div id="keysContainer"></div>
+
+<!-- Section 3: Club Quick Cards -->
+<div class="section-label">Club Quick Cards</div>
+<div class="club-tabs" id="clubTabs"></div>
+<div id="clubContent"></div>
+<div class="swipe-hint">swipe tabs &larr; &rarr;</div>
+
+<footer>Range &amp; Course Companion &middot; v1.0</footer>
+
+<script>
+// ============================
+// SERVICE WORKER REGISTRATION
+// ============================
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(function(){});
+}
+
+// Offline indicator
+window.addEventListener('online', function(){ document.getElementById('offlineBadge').classList.remove('show'); });
+window.addEventListener('offline', function(){ document.getElementById('offlineBadge').classList.add('show'); });
+if (!navigator.onLine) document.getElementById('offlineBadge').classList.add('show');
+
+// ============================
+// DATA
+// ============================
+var focusThoughts = [
+  "Release towards the target and sky. Pull down arms as you push up legs — like a pincer skimming a rock.",
+  "Arms glued to lats on the downswing. Let the torso rotation do the work — don't throw hands.",
+  "Left heel explosion straight UP. Convert ground force vertically, not rotationally.",
+  "Hold the hinge as long as gravity allows. Hands drop, then the club whips through.",
+  "Right foot banks laterally first, then pushes off. Feel the ground before you fire.",
+  "Two-piece takeaway: arms and chest move together, hands stay quiet until P3.",
+  "Finish with belt buckle at target, chest to sky. Full commitment through the ball.",
+  "Squat-to-shallow: feel the sit on the downswing, arms fall into the slot naturally."
+];
+
+var workingKeys = [
+  { title: "Arms to lats", desc: "Shallow by connecting triceps to lats, ride the torso turn" },
+  { title: "Left heel explosion", desc: "Push straight up off left heel, not spin around" },
+  { title: "Hold the lag", desc: "Keep hinge as long as possible, let gravity drop hands first" },
+  { title: "Right foot banking", desc: "Trail foot banks laterally to support and push off" },
+  { title: "Release at target", desc: "Follow through towards target and sky, fold arms to keep torque" }
+];
+
+var clubData = [
+  { tab: "Driver", emoji: "🚀", keys: [
+    "50-50 weight, hit up towards 11 o'clock",
+    "Bigger arc, keep head back for counterbalance",
+    "Release a touch sooner at P6.5–P7, right arm straightens after impact",
+    "Right foot banking + left foot breaking + forearm roll"
+  ]},
+  { tab: "Woods", emoji: "🌲", keys: [
+    "Swing mid, fairway wood feel — go down the middle line",
+    "Cover the ball, stay in impact zone longer",
+    "Left push back explode, arms guided along lats"
+  ]},
+  { tab: "Long Irons", emoji: "🧲", keys: [
+    "Ball between left foot and center",
+    "Shallow small wipe divot",
+    "Start compressing left leg earlier on backswing",
+    "Weight shift + squat shallow trigger for max arm speed"
+  ]},
+  { tab: "Short Irons", emoji: "🎯", keys: [
+    "Two hip swing with kinematic drop at 3 o'clock",
+    "Release at end of P7, more down the line",
+    "Crossover wrists like Tiger after explosion off left foot",
+    "Closer stance for better up and down forces"
+  ]},
+  { tab: "Wedges", emoji: "⛳", keys: [
+    "One hip swing, tight release alongside lats and torso",
+    "Exit low and left, chest controls face",
+    "Shorter club = less left foot stepping needed",
+    "Within 100 yds: turn chest alongside clubhead after impact",
+    "Hold hinge and release like Henrik Stenson"
+  ]},
+  { tab: "Putting", emoji: "🎱", keys: [
+    "Back short, through long — smoothly accelerating",
+    "Arms tight to torso, left outer hand is your aim",
+    "Putt to a picture",
+    "Some spine tilt towards trail side to balance out pulls",
+    "Grip at neutral cancel, no wrist break"
+  ]}
+];
+
+// ============================
+// RENDER
+// ============================
+
+// Date
+var d = new Date();
+document.getElementById('dateDisplay').textContent =
+  d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+
+// Focus Card
+var focusIdx = 0;
+var focusText = document.getElementById('focusText');
+var focusDots = document.getElementById('focusDots');
+var focusCard = document.getElementById('focusCard');
+
+function renderFocus() {
+  focusText.textContent = focusThoughts[focusIdx];
+  var dots = '';
+  for (var i = 0; i < focusThoughts.length; i++) {
+    dots += '<span class="dot' + (i === focusIdx ? ' active' : '') + '"></span>';
+  }
+  focusDots.innerHTML = dots;
+}
+renderFocus();
+
+focusCard.addEventListener('click', function() {
+  focusIdx = (focusIdx + 1) % focusThoughts.length;
+  renderFocus();
+});
+
+// Touch swipe on focus card
+var fsx = 0;
+focusCard.addEventListener('touchstart', function(e){ fsx = e.touches[0].clientX; }, {passive:true});
+focusCard.addEventListener('touchend', function(e){
+  var dx = e.changedTouches[0].clientX - fsx;
+  if (Math.abs(dx) > 40) {
+    focusIdx = dx < 0
+      ? (focusIdx + 1) % focusThoughts.length
+      : (focusIdx - 1 + focusThoughts.length) % focusThoughts.length;
+    renderFocus();
+  }
+}, {passive:true});
+
+// Working Keys
+var kc = document.getElementById('keysContainer');
+var khtml = '';
+for (var i = 0; i < workingKeys.length; i++) {
+  khtml += '<div class="key-card"><div class="key-num">' + (i+1) + '</div>' +
+    '<div class="key-content"><div class="key-title">' + workingKeys[i].title + '</div>' +
+    '<div class="key-desc">' + workingKeys[i].desc + '</div></div></div>';
+}
+kc.innerHTML = khtml;
+
+// Club Cards
+var activeClub = 0;
+var clubTabs = document.getElementById('clubTabs');
+var clubContent = document.getElementById('clubContent');
+
+function renderClubTabs() {
+  var html = '';
+  for (var i = 0; i < clubData.length; i++) {
+    html += '<div class="club-tab' + (i === activeClub ? ' active' : '') +
+      '" data-idx="' + i + '">' + clubData[i].tab + '</div>';
+  }
+  clubTabs.innerHTML = html;
+}
+
+function renderClubContent() {
+  var c = clubData[activeClub];
+  var html = '<div class="club-content"><div class="club-name"><span class="emoji">' +
+    c.emoji + '</span>' + c.tab + '</div><ul>';
+  for (var j = 0; j < c.keys.length; j++) {
+    html += '<li>' + c.keys[j] + '</li>';
+  }
+  html += '</ul></div>';
+  clubContent.innerHTML = html;
+}
+
+renderClubTabs();
+renderClubContent();
+
+clubTabs.addEventListener('click', function(e) {
+  var tab = e.target.closest('.club-tab');
+  if (!tab) return;
+  activeClub = parseInt(tab.dataset.idx);
+  renderClubTabs();
+  renderClubContent();
+  tab.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+});
+
+// Swipe on club content
+var csx = 0;
+clubContent.addEventListener('touchstart', function(e){ csx = e.touches[0].clientX; }, {passive:true});
+clubContent.addEventListener('touchend', function(e){
+  var dx = e.changedTouches[0].clientX - csx;
+  if (Math.abs(dx) > 50) {
+    if (dx < 0 && activeClub < clubData.length - 1) activeClub++;
+    else if (dx > 0 && activeClub > 0) activeClub--;
+    else return;
+    renderClubTabs();
+    renderClubContent();
+    var tabs = clubTabs.querySelectorAll('.club-tab');
+    if (tabs[activeClub]) tabs[activeClub].scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+  }
+}, {passive:true});
+</script>
+</body>
+</html>
