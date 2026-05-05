@@ -227,7 +227,7 @@ footer{text-align:center;padding:28px 0 8px;font-size:12px;color:var(--text-dim)
 
 </div>
 
-<footer>Range &amp; Course Companion &middot; v2.0</footer>
+<footer>Range &amp; Course Companion &middot; v3.0</footer>
 
 <script>
 // ============================
@@ -264,14 +264,17 @@ var focusThoughts = [
   "Right foot banks laterally first, then pushes off. Feel the ground before you fire.",
   "Two-piece takeaway: arms and chest move together, hands stay quiet until P3.",
   "Finish with belt buckle at target, chest to sky. Full commitment through the ball.",
-  "Squat-to-shallow: feel the sit on the downswing, arms fall into the slot naturally."
+  "Squat-to-shallow: feel the sit on the downswing, arms fall into the slot naturally.",
+  "Lead side posts up firm and explosive. Everything elongated at impact — legs, arms, body tight on lead side.",
+  "Parallel takeaway for angular hinge. Hands rotate around your nether region, release at target with intention.",
+  "Lateral shift creates time for the clubhead to whip through and square the face. Cover the ball."
 ];
 
 var workingKeys = [
   { title: "Arms to lats", desc: "Shallow by connecting triceps to lats, ride the torso turn" },
-  { title: "Left heel explosion", desc: "Push straight up off left heel, not spin around" },
+  { title: "Lead side post up", desc: "Post up firm and explosive on lead side — everything elongated at impact" },
   { title: "Hold the lag", desc: "Keep hinge as long as possible, let gravity drop hands first" },
-  { title: "Right foot banking", desc: "Trail foot banks laterally to support and push off" },
+  { title: "Right hand punch through", desc: "Right hand punches through impact for compression, stay down on it" },
   { title: "Release at target", desc: "Follow through towards target and sky, fold arms to keep torque" }
 ];
 
@@ -280,7 +283,9 @@ var clubData = [
     "50-50 weight, hit up towards 11 o’clock",
     "Bigger arc, keep head back for counterbalance",
     "Release a touch sooner at P6.5–P7, right arm straightens after impact",
-    "Right foot banking + left foot breaking + forearm roll"
+    "Right foot banking + left foot breaking + forearm roll",
+    "Elongate lateral shift to cover more clubface. Hold handle at impact, then let go and post on lead side hard",
+    "Half ball space for sequencing"
   ]},
   { tab: "Woods", emoji: "🌲", keys: [
     "Swing mid, fairway wood feel — go down the middle line",
@@ -297,26 +302,31 @@ var clubData = [
     "Two hip swing with kinematic drop at 3 o’clock",
     "Release at end of P7, more down the line",
     "Crossover wrists like Tiger after explosion off left foot",
-    "Closer stance for better up and down forces"
+    "Closer stance for better up and down forces",
+    "Pull handle down, elbow hits rib cage for secondary pendulum acceleration",
+    "Right hand punch through compression while staying down"
   ]},
   { tab: "Wedges", emoji: "⛳", keys: [
     "One hip swing, tight release alongside lats and torso",
     "Exit low and left, chest controls face",
     "Shorter club = less left foot stepping needed",
     "Within 100 yds: turn chest alongside clubhead after impact",
-    "Hold hinge and release like Henrik Stenson"
+    "Hold hinge and release like Henrik Stenson",
+    "Chip shots: align like Fred Couples, wrist break and rectangle the ball"
   ]},
   { tab: "Putting", emoji: "🎱", keys: [
     "Back short, through long — smoothly accelerating",
     "Arms tight to torso, left outer hand is your aim",
     "Putt to a picture",
     "Some spine tilt towards trail side to balance out pulls",
-    "Grip at neutral cancel, no wrist break"
+    "Grip at neutral cancel, no wrist break",
+    "More movement on backswing for momentum before impact",
+    "Lateral shift applies to putting too for better impact"
   ]}
 ];
 
 var routineSteps = [
-  { num: "Step 1", title: "Read", cue: "Pick your target line and shot shape. See the ball flight in your mind." },
+  { num: "Step 1", title: "Read", cue: "Lock into focus flow mode — ignore everything else. Pick your target line and shot shape. See the ball flight in your mind." },
   { num: "Step 2", title: "Setup", cue: "Drape over the ball. Feet balanced. Align club face, then body. Feel grounded." },
   { num: "Step 3", title: "Trigger", cue: "Waggle. Feel skeletal equilibrium. One deep breath in, slow exhale out." },
   { num: "Step 4", title: "One Thought", cue: focusThoughts[0] },
@@ -328,7 +338,8 @@ var missData = [
     "Takeaway too inside — start straighter and slightly outside",
     "Hips not clearing — push off left heel, feel the hip turn fully",
     "No forearm roll — feel the Tiger Woods crossover after impact",
-    "Club face open at impact — check grip knuckles, strengthen left hand"
+    "Club face open at impact — check grip knuckles, strengthen left hand",
+    "Holding onto handle too long prevents release — make sure to let it go"
   ]},
   { label: "Pull / Hook", emoji: "↩️", fixes: [
     "Right shoulder firing over the top — keep it back as long as possible",
@@ -352,13 +363,15 @@ var missData = [
     "Arms disconnected from torso — shallow and ride the lats",
     "No lag — hold hinge longer, let gravity initiate the drop",
     "Not using ground — explode off left heel, feel both feet push",
-    "Backswing too fast — slow coil, store energy, then release like a whip"
+    "Backswing too fast — slow coil, store energy, then release like a whip",
+    "Squat and load like a basketball hesi — makes you explosive"
   ]},
   { label: "Inconsistent", emoji: "🎲", fixes: [
     "Tempo too fast — slow down takeaway and backswing, earn the speed",
     "Swaying outside cylinder — coil within the body, stay centered",
     "Balance off — plant to ground first, feel stability before swinging",
-    "Too many thoughts — ONE swing thought only, imagine the shot shape"
+    "Too many thoughts — ONE swing thought only, imagine the shot shape",
+    "Lock into focus flow mode. Ignore the thought that others are watching. Nobody cares."
   ]}
 ];
 
