@@ -162,6 +162,35 @@ header .date{font-size:13px;color:var(--text-dim)}
 /* Swipe hint */
 .swipe-hint{text-align:center;font-size:12px;color:var(--text-dim);opacity:.4;padding:8px 0 0}
 
+/* Mechanics chapter pills */
+.ch-pills{
+  display:flex;gap:6px;overflow-x:auto;padding:4px 0 12px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.ch-pills::-webkit-scrollbar{display:none}
+.ch-pill{
+  flex-shrink:0;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:600;
+  background:var(--card);border:1px solid var(--border);color:var(--text-dim);
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.ch-pill.active{background:var(--blue-dim);border-color:var(--blue);color:var(--blue)}
+
+/* Mechanics content card */
+.mech-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:18px;animation:fadeIn .2s ease;
+}
+.mech-card .mech-ch{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:4px}
+.mech-card .mech-title{font-size:17px;font-weight:700;margin-bottom:12px;line-height:1.3}
+.mech-card .mech-subtitle{font-size:12px;color:var(--text-dim);font-style:italic;margin-bottom:12px}
+.mech-card ul{list-style:none;padding:0}
+.mech-card li{
+  font-size:15px;line-height:1.45;padding:8px 0;border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;gap:10px;color:var(--text-dim);
+}
+.mech-card li:last-child{border-bottom:none}
+.mech-card li::before{content:'';min-width:6px;height:6px;border-radius:50%;background:var(--blue);margin-top:8px;flex-shrink:0}
+
 /* Footer */
 footer{text-align:center;padding:28px 0 8px;font-size:12px;color:var(--text-dim);opacity:.4}
 </style>
@@ -180,6 +209,7 @@ footer{text-align:center;padding:28px 0 8px;font-size:12px;color:var(--text-dim)
   <div class="nav-tab active" data-tab="keys">Keys</div>
   <div class="nav-tab" data-tab="routine">Pre-Shot</div>
   <div class="nav-tab" data-tab="fix">Fix Miss</div>
+  <div class="nav-tab" data-tab="mechanics">Mechanics</div>
 </div>
 
 <!-- ===================== TAB 1: KEYS ===================== -->
@@ -227,7 +257,17 @@ footer{text-align:center;padding:28px 0 8px;font-size:12px;color:var(--text-dim)
 
 </div>
 
-<footer>Range &amp; Course Companion &middot; v3.0</footer>
+<!-- ===================== TAB 4: MECHANICS ===================== -->
+<div class="tab-content" id="tab-mechanics">
+
+  <div class="section-label">Swing Mechanics Reference</div>
+  <div class="ch-pills" id="chPills"></div>
+  <div id="mechContent"></div>
+  <div class="swipe-hint">swipe chapters &larr; &rarr;</div>
+
+</div>
+
+<footer>Range &amp; Course Companion &middot; v4.0</footer>
 
 <script>
 // ============================
@@ -567,6 +607,167 @@ document.getElementById('missGrid').addEventListener('click', function(e) {
   renderMissGrid();
   renderFixContent();
 });
+
+// ============================
+// TAB 4: MECHANICS
+// ============================
+var mechanicsData = [
+  { ch: 1, title: "Weight Shift, Hinge, Shallow", subtitle: "The three core motions and how they sequence", keys: [
+    "Three core motions: pressure shift through your feet, wrist hinge stored as lag, and club shallowing onto a flatter inside plane",
+    "Pressure shifts to the lead foot BEFORE your arms come down — this ground-up sequence is what the best ball-strikers use",
+    "Shallowing is a RESULT of correct lower-body action, not a hand manipulation — the sequence drops the club for you",
+    "Compression at impact = forward shaft lean + pressure stacked on lead side + square clubface meeting ball before ground",
+    "The classic amateur error is reversing the sequence: hands fire first from the top, club steepens, pressure stays back (casting)"
+  ]},
+  { ch: 2, title: "Compression & Trail-Hand Punch", subtitle: "Force at impact — drills to feel the trapped strike", keys: [
+    "Compression is three things converging: forward shaft lean, pressure on lead side, square face hitting ball then turf",
+    "Trail palm faces the ground at impact with wrist still bent back — like pressing a board into the turf",
+    "The image: throw a ball low and hard at the target with your right hand — that driving motion IS impact position",
+    "The punch is NOT a flip — trail wrist stays extended through impact and only releases AFTER the ball is gone",
+    "Key drills: right-hand-only wedges, punch shots (abbreviated finish), towel drag (4 inches behind ball), impact bag"
+  ]},
+  { ch: 3, title: "Trail Leg in the Backswing", subtitle: "Glute load over a stable trail hip pivot", keys: [
+    "Maintain or slightly increase address knee flex throughout the backswing — DO NOT straighten the trail leg",
+    "Load pressure into the trail glute and hamstring, NOT the quad — hamstring lengthens eccentrically like a bowstring",
+    "Trail hip stays in place and rotates over a stable joint as the pelvis turns — no sliding back",
+    "Pressure pattern on trail foot at top: ~60% heel, ~30% instep, ~10% forefoot",
+    "The feel: sitting slightly into your trail glute — like a barstool behind your trail hip you're settling onto"
+  ]},
+  { ch: 4, title: "X-Factor & Transition", subtitle: "Stretch peak, kinetic sequence, lower body lead", keys: [
+    "X-factor = difference between shoulder turn (~90°) and pelvic turn (~45°) — about 40-50° at top",
+    "Peak X-factor stretch (~55-65°) occurs in EARLY transition when pelvis starts unwinding while shoulders still finish coiling",
+    "Kinetic sequence fires ground-up: pressure shift → pelvis → torso → lead arm → hands/club",
+    "Three transition faults that destroy power: coming over the top, hanging back, and casting",
+    "Drills: step-and-fire (lift lead foot, step toward target), pump drill, pause at the top to feel pressure shift first"
+  ]},
+  { ch: 5, title: "Lower Body Refinements", subtitle: "Lateral shift, settle, vertical push, heel pressure", keys: [
+    "Two refinements that fix most lower-body issues: settle BEFORE you push tall, and pressure on lead HEEL not toe",
+    "Squat-to-launch: Phase A (settle) — brief squat as pressure shifts lead, then Phase B (vertical push) — lead leg extends up",
+    "Toe pressure causes hips to thrust toward ball (early extension) and loss of posture — heel pressure enables clean rotation",
+    "Vertical push through lead leg opens the pelvis — like a figure skater pulling in arms to accelerate rotation",
+    "Full sequence: pelvis pivots over trail hip → lateral shift with settle → pressure on lead heel/midfoot → vertical push to post"
+  ]},
+  { ch: 6, title: "Upper Body Sequencing", subtitle: "Load vs. explode — when arms apply force", keys: [
+    "Effort curve: backswing is eccentric LOAD (~30% effort), transition is stretch peak (patience), downswing is concentric EXPLODE (100%)",
+    "Amateurs invert it — they muscle the backswing then relax through impact. Effort lives in the explosion, not the load",
+    "Upper body chain in downswing: pelvis (engine) → thorax/chest (fires after pelvis) → lead arm (passive early) → forearms → clubhead",
+    "Feel: 'My back faces the target longer than feels right' — pelvis ~30° open while shoulders still nearly perpendicular",
+    "Feel: 'Trail elbow drops into my pocket before hands do anything' — this IS the shallowing move, passively caused by chest rotation"
+  ]},
+  { ch: 7, title: "Push vs. Pull Timing", subtitle: "Lead leg peaks early, arm pull peaks late", keys: [
+    "Two distinct forces: lead leg PUSH (vertical extension, peaks early downswing) and arm PULL (lead lat, peaks late downswing)",
+    "Mental model: PUSH the floor away with your lead leg first — that handles transition. Then PULL the club through with your lead lat",
+    "Don't do both at once — pushing and pulling simultaneously creates a stuck swing, body and arms bound together, no whip",
+    "Diagnostic: armsy and weak = skipping the push. Stuck and slicing = skipping the pull. Over-rotate and pull-hook = simultaneous",
+    "Key drill: counted sequence — count '1' at top (push), count '2' at hip-high (pull). Force separation between the two phases"
+  ]},
+  { ch: 8, title: "Grip Pressure Profile", subtitle: "Lead steady, trail light then spikes at impact", keys: [
+    "Lead hand steady at ~5/10 throughout — controls the FACE. Trail hand light ~3/10 rising to ~9/10 at impact — delivers SPEED",
+    "Lead hand pressure points: last 3 fingers (middle, ring, pinky) plus heel pad. Trail hand: middle two fingers (middle, ring)",
+    "Both hands stay light through transition — this is the only way the wrists can stay fully hinged and the club can lag",
+    "At impact zone: lead firms slightly to 6-7/10 for face control, trail EXPLODES to ~9/10 — the late punch. Returns to light after",
+    "Death grip (both tight throughout) = no shallowing, no whip. Trail grabbing from top = wrist hinge releases early (casting)"
+  ]},
+  { ch: 9, title: "Backswing Rails", subtitle: "Setup, takeaway, and the layered coil", keys: [
+    "Grip checkpoints: 2 to 2.5 knuckles visible on lead hand, both V's point at trail shoulder, trail palm parallel covering lead thumb",
+    "Takeaway checkpoint: at waist-high (shaft parallel), toe of club should point straight UP — if it points behind you, face is already open",
+    "Layered coil at top: pelvis ~45°, thoracic spine ~90°, forearms ~85° supination, wrists ~90° hinge — layers compound, not stack",
+    "Each layer moves through its full range at its own rate, finishing in unison at the top — nothing leads, nothing lags",
+    "Doug's specific rail: slice starts when hands roll open in takeaway. Fix: feel trail forearm stay on top of lead forearm in first 12 inches"
+  ]},
+  { ch: 10, title: "Forearm Rotation & Shallowing", subtitle: "Unified rotation, holding the supination, body shallows", keys: [
+    "Both forearms rotate as a UNIT in the same absolute direction throughout the swing — they never split or oppose each other",
+    "Rotation cycle: slight pronation (address) → supinate up (backswing) → HOLD at top/transition → pronate through (downswing to finish)",
+    "The 'hold' is the key: great ball-strikers freeze their arm rotation while the body fires — arms come down already in the slot",
+    "Shallowing is body-driven, not hand-driven — lower body shifts and rotates while arms maintain their top-of-backswing position",
+    "Wrong beliefs: 'drop the hands' (body rotation drops them), 'roll forearms to shallow' (they HOLD), 'push trail elbow in' (it drops passively)"
+  ]},
+  { ch: 11, title: "The Unified Rotation Pattern", subtitle: "Both arms rotate together — one motion, not two", keys: [
+    "Your forearms aren't doing two separate jobs — they're doing one continuous rotation that cycles from address back through the full swing",
+    "Both arms rotate together in the same absolute direction in space throughout the entire swing — they never split, never oppose",
+    "Simplest cue: 'Both arms rotate together. Hold at the top. Re-rotate through impact.' Three short clauses = the entire arm pattern",
+    "Old model (two arms doing different things, constant coordination) → Unified model (one rotational motion, passive arms following body)",
+    "Combine with body sequencing (Ch 4-7) and you have the full swing — rotation comes from the trunk, arms transmit it"
+  ]},
+  { ch: 12, title: "Driver, Irons & Shaping Shots", subtitle: "Attack angle, draws/fades, flop and punch", keys: [
+    "Driver: hit UP (+5° AoA), ball off lead heel, spine tilted away from target, 55% trail pressure at address, wider stance",
+    "Irons: hit DOWN (-5° AoA), ball center-forward, 50/50 pressure, slight forward shaft lean, ball then turf then divot",
+    "Draw: hold the supination longer in transition, let arms re-rotate slightly LATER. Fade: pronate slightly earlier in downswing",
+    "All shaped shots use the same unified rotation pattern — you're changing setup, rotation timing, and finish length, never the swing itself",
+    "Specialty shots: stinger (ball back, abbreviated finish), flop (open face, full release under ball), bump-and-run (putting stroke with 7i-PW)"
+  ]},
+  { ch: 13, title: "Trail Leg in the Downswing", subtitle: "The engine — horizontal and rotational drive", keys: [
+    "Trail leg is the ENGINE providing horizontal drive and rotational force. Lead leg is the POST — the axis it rotates around",
+    "Pressure progression on trail foot through downswing: instep → ball of foot → toes — then heel lifts as energy is delivered",
+    "Two-stage lower body: Stage 1 (transition → mid-DS) trail drives, lead receives. Stage 2 (mid-DS → impact) lead posts, trail is spent",
+    "Trail knee kicks forward AND inward toward lead knee — not straight at the ball (that's a slide, not rotation)",
+    "At impact the legs are asymmetric: lead leg nearly straight (posted, vertical brace), trail leg still flexed (knee inward, heel up, spent)"
+  ]},
+  { ch: 14, title: "Knee Flex & Lead-Side Stack", subtitle: "How the lead leg signals 'now fire'", keys: [
+    "The stack is the dividing line: before you feel it, you're positioning. After you feel it, you're firing and delivering the strike",
+    "Lead knee flex deepens to ~35-38° during the squat, then extends to ~10-20° at impact — firm but NOT locked or hyperextended",
+    "What the stack feels like: planted foot (heel/arch), firing glute, firm knee, hip stacked over lead foot — you're a solid column",
+    "The stack is your green light for the arm release — once you feel it, timing becomes about releasing arms to that moment",
+    "Faults: knee bent >30° at impact (never posted), knee locked/hyperextended (early extension), knee buckles inward (weak glute)"
+  ]},
+  { ch: 15, title: "The Kinetic Chain", subtitle: "Trail foot to trail hand — sequenced, not synced", keys: [
+    "Trail foot push-off and trail hand punch are SEQUENCED, not simultaneous — foot fires first (transition), hand fires last (impact)",
+    "The trail foot push is what gives the trail hand permission to punch — without the foot driving the body forward, the hand would just cast",
+    "Each segment loads, peaks, then decelerates and transfers energy to the next — bigger/slower segments fire first, smaller/faster ones last",
+    "Full chain: trail foot → pelvis → torso → lead arm → trail hand → clubhead — each peak is sequential, never simultaneous",
+    "If swing feels armsy/weak: foot never fired (no push). If stuck/slicing: arms never fired (no pull). Build one swing, sequence the chain."
+  ]}
+];
+
+var activeCh = 0;
+var chPillsEl = document.getElementById('chPills');
+var mechContentEl = document.getElementById('mechContent');
+
+function renderChPills() {
+  var html = '';
+  for (var i = 0; i < mechanicsData.length; i++) {
+    html += '<div class="ch-pill' + (i === activeCh ? ' active' : '') + '" data-idx="' + i + '">Ch ' + mechanicsData[i].ch + '</div>';
+  }
+  chPillsEl.innerHTML = html;
+}
+
+function renderMechContent() {
+  var c = mechanicsData[activeCh];
+  var html = '<div class="mech-card"><div class="mech-ch">Chapter ' + c.ch + '</div>' +
+    '<div class="mech-title">' + c.title + '</div>' +
+    '<div class="mech-subtitle">' + c.subtitle + '</div><ul>';
+  for (var j = 0; j < c.keys.length; j++) { html += '<li>' + c.keys[j] + '</li>'; }
+  html += '</ul></div>';
+  mechContentEl.innerHTML = html;
+}
+
+renderChPills();
+renderMechContent();
+
+chPillsEl.addEventListener('click', function(e) {
+  var pill = e.target.closest('.ch-pill');
+  if (!pill) return;
+  activeCh = parseInt(pill.dataset.idx);
+  renderChPills();
+  renderMechContent();
+  pill.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+});
+
+// Swipe on mechanics content
+var msx = 0;
+mechContentEl.addEventListener('touchstart', function(e){ msx = e.touches[0].clientX; }, {passive:true});
+mechContentEl.addEventListener('touchend', function(e){
+  var dx = e.changedTouches[0].clientX - msx;
+  if (Math.abs(dx) > 50) {
+    if (dx < 0 && activeCh < mechanicsData.length - 1) activeCh++;
+    else if (dx > 0 && activeCh > 0) activeCh--;
+    else return;
+    renderChPills();
+    renderMechContent();
+    var activePill = chPillsEl.querySelector('.ch-pill.active');
+    if (activePill) activePill.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+  }
+}, {passive:true});
 
 </script>
 </body>
